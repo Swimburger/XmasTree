@@ -19,6 +19,7 @@ namespace XmasTree
             // Fixture setup
             Fixture fixture = new Fixture();
             multiverse = fixture.Create<Multiverse>();
+            //multiverse.Universes.ForEach(uni => uni.Galaxies = null);
         }
 
 
@@ -131,12 +132,21 @@ namespace XmasTree
         private List<Citizen> GetCitizens(Multiverse multiverse)
         {
             var citizens = multiverse.Universes
-                ?.SelectMany(universe => universe.Galaxies)
-                ?.SelectMany(galaxy => galaxy.Planets)
-                ?.SelectMany(planet => planet.Continents)
-                ?.SelectMany(continent => continent.Countries)
-                ?.SelectMany(country => country.Citizens)
-                ?.ToList();
+                ?.Where(universe => universe.Galaxies != null)
+                .SelectMany(universe => universe.Galaxies)
+
+                .Where(galaxy => galaxy.Planets != null)
+                .SelectMany(galaxy => galaxy.Planets)
+
+                .Where(planet => planet.Continents != null)
+                .SelectMany(planet => planet.Continents)
+
+                .Where(continent => continent.Countries != null)
+                .SelectMany(continent => continent.Countries)
+
+                .Where(country => country.Citizens != null)
+                .SelectMany(country => country.Citizens)
+                .ToList();
 
             return citizens ?? new List<Citizen>();
         }
