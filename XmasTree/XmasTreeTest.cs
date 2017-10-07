@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ploeh.AutoFixture;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using XmasTree.Step1;
 
@@ -48,7 +49,7 @@ namespace XmasTree
                                                     {
                                                         foreach (var citizen in country.Citizens)
                                                         {
-                                                            Console.WriteLine($"{citizen.FirstName} {citizen.LastName}");
+                                                            Trace.WriteLine($"{citizen.FirstName} {citizen.LastName}");
                                                         }
                                                     }
                                                 }
@@ -108,7 +109,7 @@ namespace XmasTree
 
                                 foreach (var citizen in country.Citizens)
                                 {
-                                    Console.WriteLine($"{citizen.FirstName} {citizen.LastName}");
+                                    Trace.WriteLine($"{citizen.FirstName} {citizen.LastName}");
                                 }
                             }
                         }
@@ -123,7 +124,7 @@ namespace XmasTree
             var citizens = GetCitizens(multiverse);
             foreach(var citizen in citizens)
             {
-                Console.WriteLine($"{citizen.FirstName} {citizen.LastName}");
+                Trace.WriteLine($"{citizen.FirstName} {citizen.LastName}");
             }
         }
 

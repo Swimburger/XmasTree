@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ploeh.AutoFixture;
-using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using XmasTree.Step2;
 
@@ -18,8 +18,37 @@ namespace XmasTree
             // Fixture setup
             Fixture fixture = new Fixture();
             multiverse = fixture.Create<Multiverse>();
-        }
 
+            fixture.AddManyTo(multiverse.Universes);
+
+            multiverse.Universes
+                .SelectMany(universe =>
+                {
+                    fixture.AddManyTo(universe.Galaxies);
+                    return universe.Galaxies;
+                })
+                .SelectMany(galaxy =>
+                {
+                    fixture.AddManyTo(galaxy.Planets);
+                    return galaxy.Planets;
+                })
+                .SelectMany(planet =>
+                {
+                    fixture.AddManyTo(planet.Continents);
+                    return planet.Continents;
+                })
+                .SelectMany(continent =>
+                {
+                    fixture.AddManyTo(continent.Countries);
+                    return continent.Countries;
+                })
+                .SelectMany(country =>
+                {
+                    fixture.AddManyTo(country.Citizens);
+                    return country.Citizens;
+                })
+                .ToList();
+        }
 
         [TestMethod]
         public void TestXmasTree()
@@ -36,7 +65,7 @@ namespace XmasTree
                             {
                                 foreach (var citizen in country.Citizens)
                                 {
-                                    Console.WriteLine($"{citizen.FirstName} {citizen.LastName}");
+                                    Trace.WriteLine($"{citizen.FirstName} {citizen.LastName}");
                                 }
                             }
                         }
@@ -51,7 +80,7 @@ namespace XmasTree
             var citizens = GetCitizens(multiverse);
             foreach (var citizen in citizens)
             {
-                Console.WriteLine($"{citizen.FirstName} {citizen.LastName}");
+                Trace.WriteLine($"{citizen.FirstName} {citizen.LastName}");
             }
         }
 
